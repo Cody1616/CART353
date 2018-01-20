@@ -29,6 +29,8 @@ void draw() {
     checkered();
     break;
   case 2:
+    circle();
+    break;
   case 3:
   default: 
     break;
@@ -60,18 +62,35 @@ void checkered() {
   updatePixels();
 }
 
+void circle() {
+
+  loadPixels();
+  cat1.loadPixels();
+  image(cat1, 0, 0);
+
+  for (int i = 0; i<height; i ++) {
+    for (int j = 0; j < width; j++) {
+      if (dist(j, i, mouseX, mouseY) < 50) {
+        pixels[i*width+j] = cat2.pixels[i*width+j];
+      } else {
+        pixels[i*width+j] = cat1.pixels[i*width+j];
+      }
+    }
+  }
+  updatePixels();
+}
+
+
+
+
 void keyPressed() {
   if (keyCode == '1') {
     mode = 1;
-    
   } else if (keyCode == '2') {
     mode = 2;
-    
   } else if (keyCode == '3') {
     mode = 3;
-    
   } else {
     mode = 0;
-    
   }
 }
