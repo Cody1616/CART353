@@ -8,11 +8,14 @@ PImage cat2;
 // int for picture mode
 int mode;
 
+Spotlight spot;
+
 void setup() {
   size(640, 480);
   //load images
   cat1 = loadImage("glowcat2.jpg");
   cat2 = loadImage("coatcat2.jpg");
+  spot = new Spotlight(cat2, cat1);
 }
 
 void draw() {
@@ -63,34 +66,34 @@ void checkered() {
 }
 
 void circle() {
-
-  loadPixels();
-  cat1.loadPixels();
-  image(cat1, 0, 0);
-
-  for (int i = 0; i<height; i ++) {
-    for (int j = 0; j < width; j++) {
-      if (dist(j, i, mouseX, mouseY) < 50) {
-        pixels[i*width+j] = cat2.pixels[i*width+j];
-      } else {
-        pixels[i*width+j] = cat1.pixels[i*width+j];
-      }
-    }
-  }
-  updatePixels();
+  spot.display();
+  spot.update();
 }
 
-
-
-
 void keyPressed() {
-  if (keyCode == '1') {
-    mode = 1;
-  } else if (keyCode == '2') {
-    mode = 2;
-  } else if (keyCode == '3') {
-    mode = 3;
-  } else {
-    mode = 0;
+
+  switch(mode) {
+  case 1:
+
+    break;
+  case 2:
+    spot.keyPressed();
+    break;
+  case 3:
+    break;
+  case 0:
+    if (keyCode == '1') {
+      mode = 1;
+    } else if (keyCode == '2') {
+      mode = 2;
+    } else if (keyCode == '3') {
+      mode = 3;
+    }
+    break;
+  }
+}
+void keyReleased() {
+  if (mode == 2) {
+    spot.keyReleased();
   }
 }
