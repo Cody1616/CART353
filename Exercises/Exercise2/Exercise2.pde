@@ -9,6 +9,7 @@ PImage cat2;
 int mode;
 
 Spotlight spot;
+Quad quad;
 
 void setup() {
   size(640, 480);
@@ -16,6 +17,7 @@ void setup() {
   cat1 = loadImage("glowcat2.jpg");
   cat2 = loadImage("coatcat2.jpg");
   spot = new Spotlight(cat2, cat1);
+  quad = new Quad(width/2, height/2);
 }
 
 void draw() {
@@ -35,6 +37,11 @@ void draw() {
     circle();
     break;
   case 3:
+    image(cat1, 0, 0);
+    quad.changeCoords();
+    quad.drawQuad();
+    quad.col = cat1.get(int(quad.x), int(quad.y));
+    break;
   default: 
     break;
   }
