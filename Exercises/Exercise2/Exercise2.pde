@@ -27,26 +27,36 @@ void setup() {
 
 void draw() {
 
-  if (mode == 0) {
-    background(0);
-    textAlign(CENTER);
-    textSize(30);
-    text("1 for checkered, 2 for x, 3 for x", width/2, height/2);
-  }
 
   switch(mode) {
   case 1: 
     mC.display();
+
+    textAlign(CORNER);
+    textSize(10);
+    text("click to switch pictures", 10, 10);
     break;
   case 2:
 
     spot.display(); 
     spot.update();
+    textAlign(CORNER);
+
+    textSize(10);
+    text("use arrow keys to move", 10, 10);
     break;
   case 3:
     tH.display();
+    textAlign(CORNER);
+
+    textSize(10);
+    text("click to switch colors, press SPACE to switch pictures", 10, 10);
     break; 
-  default: 
+    case 0:
+    background(0);
+    textAlign(CENTER);
+    textSize(30);
+    text("1 for pixel, 2 for spotlight, 3 for shadow", width/2, height/2);
     break;
   }
   if (saveTimer) {
@@ -86,6 +96,9 @@ void keyPressed() {
     save("data/savedImage.png");
     saveTimer = true;
     timer = millis();
+  }
+  if (key == 'q') {
+    mode = 0;
   }
 
   switch(mode) {
