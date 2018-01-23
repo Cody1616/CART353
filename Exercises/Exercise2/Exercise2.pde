@@ -10,6 +10,7 @@ int mode;
 
 Spotlight spot;
 ThreshHold tH;
+Mosaic mC;
 
 boolean saveTimer = false;
 int timer;
@@ -21,6 +22,7 @@ void setup() {
   cat2 = loadImage("coatcat2.jpg");
   spot = new Spotlight(cat2, cat1);
   tH = new ThreshHold(cat1, cat2);
+  mC = new Mosaic(cat1, cat2);
 }
 
 void draw() {
@@ -34,7 +36,7 @@ void draw() {
 
   switch(mode) {
   case 1: 
-    checkered();
+    mC.display();
     break;
   case 2:
 
@@ -98,6 +100,7 @@ void keyPressed() {
     break; 
   case 0 : 
     if (keyCode == '1') {
+      background(0);
       mode = 1;
     } else if (keyCode == '2') {
       mode = 2;
@@ -115,4 +118,5 @@ void keyReleased() {
 
 void mouseClicked() {
   tH.mouseClicked();
+  mC.mouseClicked();
 }
