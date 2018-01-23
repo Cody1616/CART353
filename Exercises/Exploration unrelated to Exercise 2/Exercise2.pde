@@ -9,7 +9,7 @@ PImage cat2;
 int mode;
 
 Spotlight spot;
-ThreshHold tH;
+Quad[] tile = new Quad[100];
 
 void setup() {
   size(640, 480);
@@ -17,7 +17,33 @@ void setup() {
   cat1 = loadImage("glowcat2.jpg");
   cat2 = loadImage("coatcat2.jpg");
   spot = new Spotlight(cat2, cat1);
-  tH = new ThreshHold(cat1, cat2);
+
+  for (int i = 0; i<10; i++) {
+    for(int j = 0; j<10; j++){
+      
+      // first shape
+      if(i==0&&j==0){
+      tile[i+j] = new Quad(new MovPoint(0, 0, 0.01), new MovPoint(0, 40, 0.03), new MovPoint(40, 40, 0.04), new MovPoint(40, 0, 0.08));
+      println(tile[i+j].p2.y);  
+        
+      }
+      // beginning of a new row
+      else if(j==0){
+      tile[i+j] = new Quad(new MovPoint(0, i*40, 0.01), new MovPoint(0, i*40+40, 0.03), new MovPoint(40, i*40+40, 0.04), new MovPoint(40, i*40, 0.08));
+      println("2"); 
+      
+      }
+      //other shapes
+      else{
+      tile[i+j] = new Quad(new MovPoint(j*40, i*40, 0.01), new MovPoint(j*40, i*40+40, 0.03), new MovPoint(j*40, i*40, 0.04), new MovPoint(j*40, i*40, 0.08));
+      println(i+j, tile[i+j].p2.x); 
+      
+      }
+    
+    
+    
+    }
+  }
 }
 
 void draw() {
@@ -34,14 +60,18 @@ void draw() {
     checkered();
     break;
   case 2:
-
-    spot.display(); 
-    spot.update();
+    circle();
     break;
   case 3:
-    tH.display();
+    cat1.loadPixels();
+    image(cat1, 0, 0);
+    for (int i = 0; i<tile.length; i++) {
+      println(i, tile[i].p1.x, tile[i].p1.y, tile[i].p2.x, tile[i].p2.y, tile[i].p3.x, tile[i].p3.y, tile[i].p4.x, tile[i].p4.y);
+    //tile[i].col = cat1.get(int(tile[i].p1.x), int(tile[i].p1.y));
+    //tile[i].drawQuad(); 
+    }
     break; 
-  default: 
+  default : 
     break;
   }
 }
@@ -54,7 +84,7 @@ void checkered() {
   boolean square = true; 
 
   // loop goes through all the pixels, alternating between the two images
-  for (int i = 0; i<width*height; i++) {
+  for (int i = 0; i<=width*height; i++) {
     if (square) {
       pixels[i] = cat1.pixels[i]; 
       square = !square;
@@ -66,8 +96,14 @@ void checkered() {
       square = !square;
     }
   }
+
   // display result
   updatePixels();
+}
+
+void circle() {
+  spot.display(); 
+  spot.update();
 }
 
 void keyPressed() {
@@ -80,7 +116,6 @@ void keyPressed() {
     spot.keyPressed(); 
     break; 
   case 3 : 
-    tH.keyPressed();
     break; 
   case 0 : 
     if (keyCode == '1') {
@@ -97,8 +132,4 @@ void keyReleased() {
   if (mode == 2) {
     spot.keyReleased();
   }
-}
-
-void mouseClicked() {
-  tH.mouseClicked();
 }

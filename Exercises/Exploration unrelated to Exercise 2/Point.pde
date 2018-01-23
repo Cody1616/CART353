@@ -1,8 +1,8 @@
 class MovPoint {
   float x;
   float y;
-  float vx;
-  float vy;
+  float vx = 0;
+  float vy = 0;
   float ox;
   float oy;
   float t;
@@ -13,7 +13,6 @@ class MovPoint {
   MovPoint(float tox, float toy, float tt) {
     ox = tox;
     oy = toy;
-
     x = ox;
     y = oy;
     t = tt;
