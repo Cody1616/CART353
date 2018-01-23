@@ -11,6 +11,9 @@ int mode;
 Spotlight spot;
 ThreshHold tH;
 
+boolean saveTimer = false;
+int timer;
+
 void setup() {
   size(640, 480);
   //load images
@@ -44,6 +47,12 @@ void draw() {
   default: 
     break;
   }
+  if (saveTimer) {
+    text("saving...", width/2, height/2);
+    if (timer+24>millis()) {
+      saveTimer = false;
+    }
+  }
 }
 
 void checkered() {
@@ -71,6 +80,11 @@ void checkered() {
 }
 
 void keyPressed() {
+  if (key == 's') {
+    save("data/savedImage.png");
+    saveTimer = true;
+    timer = millis();
+  }
 
   switch(mode) {
   case 1 : 

@@ -64,9 +64,11 @@ class ThreshHold {
   }
 
   void keyPressed() {
-    //switch images
-    tempImg = img1;
-    img1 = img2;
-    img2 = tempImg;
+    if (key == ' ') {
+      //switch images
+      tempImg = img1;
+      img1 = img2;
+      img2 = tempImg;
+    }
   }
 }
