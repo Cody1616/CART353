@@ -20,7 +20,7 @@ void setup() {
   video.start();
   for (int i = 0; i<6; i++) {
     for (int j = 0; j<4; j++) {
-      cats[i*4+j] = new cat(i*100, j*100, random(0.01, 0.05), random(0.01, 0.05));
+      cats[i*4+j] = new cat(i*random(70, 120), j*random(70, 120), random(0.01, 0.5), random(1, 1.5));
     }
   }
 }

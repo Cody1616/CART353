@@ -4,6 +4,7 @@ class cat {
   float t;
   float u;
   PImage cat;
+  PVector p = new PVector(0, 0);
 
   cat(float tx, float ty, float tt, float ut) {
     x = tx;
@@ -16,7 +17,9 @@ class cat {
 
   void update() {
     tint(255, 255);
-    image(cat, x+noise(t)*50, y+noise(u)*50);
+    p.x = map(noise(t), 0, 1, x, x+100);
+    p.y = map(noise(u), 0, 1, y, y+100);
+    image(cat, p.x, p.y);
     t+=0.01;
     u+=0.01;
     
