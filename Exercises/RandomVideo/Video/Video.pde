@@ -1,20 +1,27 @@
-import processing.video.*;
 
+// libraries
+import processing.video.*;
 import java.util.*;
 
+// declare capture element
 Capture video;
 
+// random generator for gaussian generation
 Random generator;
 
+// float for threshholsd
 float TH;
 
+//cat array
 cat cats[] = new cat[24];
 
-int b = 255;
-int t = 30;
+//ints for brightness and transparency
+int bright = 255;
+int transp = 30;
 
 void setup() {
   size(640, 480);
+  // initialize capture, cats, etc
   generator = new Random();
   video = new Capture(this, 640, 480, 30);
   video.start();
@@ -29,55 +36,69 @@ void setup() {
 
 
 void draw() {
+  // call this function to check if theres a video.
   manageVideo();
-  tint(255, t);
+
+  // set up video
+  tint(255, transp);
   image(video, 0, 0);
   loadPixels();
+
+  //generate threshhold and lighter color brightness
   getTH();
   getBright();
+
+  // go through each pixel to check its color to compare to the threshhold
   color col;
   for (int i = 0; i<height; i++) {
     for (int j = 0; j<width; j++) {
       {
+        // get the pixel
         col = video.get(j, i);
+        // if higher than threshhold
         if ((red(col)+blue(col)+green(col))/3>TH) {
-          pixels[i*width+j]= color(b, t);
+          // give it the predetermined color we got in getBright() (+ the transparency)(cause it looks cool idk)
+          pixels[i*width+j]= color(bright, transp);
         } else {
-          pixels[i*width+j]= color(0, t);
+          // otherwise make it black
+          pixels[i*width+j]= color(0, transp);
         }
       }
     }
   }
 
-
+  // then update the pixels...
   updatePixels();
-  for(int i = 0; i<cats.length; i++){
+
+  // and the cats. Can't forget the cats.
+  for (int i = 0; i<cats.length; i++) {
     cats[i].update();
-  
   }
 }
 
 
 void manageVideo() {
+  // if no video imput, then do nothing
   if (!video.available()) {
     return;
   }
-
+  // else look at the imput
   video.read();
 }
 
 void getTH() {
-  //Note that nextGaussian() returns a double.
-  float num = (float) generator.nextGaussian();
-  float sd = 40;
-  float mean = 320;
+  //pretty much the code from Nature of Code
 
-  //Multiply by the standard deviation and add the mean.
-  float x = sd * num + mean;
-  TH = map(x, 0, width, 0, 255);
+  float num = (float) generator.nextGaussian();
+  float sd = 40; //found that 40 works pretty well - it gives varied threshholds (and thus different "shadows" each frame), bu not too random. Which i guess is the point of gaussian anyways/...
+  float mean = 127;
+
+  //Multiply by the standard deviation and add the mean. That's the threshhold for this frame
+  TH = sd * num + mean;
 }
 
 void getBright() {
+  // again, from Nature of Code.
   //We do this “forever” until we find a qualifying random value.
 
   while (true) {
@@ -90,7 +111,11 @@ void getBright() {
 
     //Does it qualify? If so, we’re done!
     if (r2 < probability) {
-      b = int(map(r1, 0, 1, 100, 255));
+      // but BEFORE, map the brightness of the lightest color of the threshhold
+      // to that first random value. 
+      // so that the brightness remains random, but mostly brighter.
+      // if that makes any sense. 
+      bright = int(map(r1, 0, 1, 100, 255));
       return;
     }
   }
