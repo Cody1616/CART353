@@ -8,6 +8,7 @@ Random generator;
 
 float TH;
 
+cat cats[] = new cat[24];
 
 int b = 255;
 int t = 30;
@@ -17,6 +18,11 @@ void setup() {
   generator = new Random();
   video = new Capture(this, 640, 480, 30);
   video.start();
+  for (int i = 0; i<6; i++) {
+    for (int j = 0; j<4; j++) {
+      cats[i*4+j] = new cat(i*100, j*100, random(0.01, 0.05), random(0.01, 0.05));
+    }
+  }
 }
 
 
@@ -45,6 +51,10 @@ void draw() {
 
 
   updatePixels();
+  for(int i = 0; i<cats.length; i++){
+    cats[i].update();
+  
+  }
 }
 
 
@@ -69,7 +79,7 @@ void getTH() {
 
 void getBright() {
   //We do this “forever” until we find a qualifying random value.
- 
+
   while (true) {
     //Pick a random value.
     float r1 = random(1);
