@@ -1,0 +1,5 @@
+class Thing extends Attractor{
+
+
+
+}
