@@ -2,8 +2,10 @@ class Attractor {
   PVector acc = new PVector(0, 0);
   PVector vel = new PVector(0, 0);
   PVector loc;
+  int size;
 
-  Attractor() {
+  Attractor(int tsize) {
+    size = tsize;
     loc = new PVector(random(0, width), random(0, height));
   }
 
@@ -21,8 +23,12 @@ class Attractor {
     return loc;
   }
 
+  int getSize() {
+    return size;
+  }
+
   void display() {
-    rect(loc.x, loc.y, 10, 10);
+    ellipse(loc.x, loc.y, size, size);
   }
 
   void update() {
@@ -36,11 +42,11 @@ class Attractor {
     if (loc.x<0) {
       loc.x = width;
     }
-    if(loc.y>height){
-    loc.y = 0;
+    if (loc.y>height) {
+      loc.y = 0;
     }
-    if(loc.y<0){
-    loc.y = height;
+    if (loc.y<0) {
+      loc.y = height;
     }
   }
 }
