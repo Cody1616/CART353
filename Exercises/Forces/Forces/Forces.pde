@@ -8,6 +8,7 @@ Ball ball;
 Thing objects[] = new Thing[50];
 //Thing ob;
 
+boolean inGame = true;
 
 void setup() {
   size(640, 480);
@@ -70,6 +71,12 @@ void draw() {
   textSize(25);
   textAlign(CORNER);
   text("size: "+(ball.getSizeB())+"\ncaught: "+counter, 25, 25);
+
+  if (counter == objects.length) {
+    inGame = false;
+    textAlign(CENTER);
+    text("CONGRATS YOU CAUGHT THEM ALL\nPress SPACE to reset", width/2, height/2);
+  }
 }
 
 // go through each tile and check if the ball is on it
@@ -83,6 +90,13 @@ void checkGround() {
 
 void keyPressed() {
   ball.keyPressed();
+  if (keyCode == ' ' && !inGame) {
+    for (int i = 0; i<objects.length; i++) {
+      objects[i].attracted = false;
+    }
+    ball.setMult(1);
+    
+  }
 }
 
 void keyReleased() {

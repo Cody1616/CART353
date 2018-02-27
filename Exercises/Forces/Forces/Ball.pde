@@ -8,7 +8,7 @@ class Ball extends Attractor {
     super(s);
     f = color(200, 100, 100);
   }
-// display
+  // display
   void display() {
     fill(f);
     ellipse(loc.x, loc.y, size*m, size*m);
@@ -86,34 +86,41 @@ class Ball extends Attractor {
   void setMult(float i) {
     m=i;
   }
-  
-  float getSizeB(){
-  return size*m;
+
+  float getSizeB() {
+    return size*m;
   }
 
 
 
   void keyPressed() {
     if (keyCode == LEFT) {
-      applyForce(new PVector(-10, 0));
+      acc.x+=-10;
     }
     if (keyCode == RIGHT) {
-      applyForce(new PVector(10, 0));
+      acc.x+=10;
     }
     if (keyCode == UP) {
-      applyForce(new PVector(0, -10));
+      acc.y+=-10;
     }
     if (keyCode == DOWN) {
-      applyForce(new PVector(0, 10));
+      acc.y+=10;
     }
   }
 
   void keyReleased() {
-    if (keyCode == LEFT||keyCode == RIGHT) {
-      applyForce(new PVector(0, 0));
+    if (keyCode == LEFT&&acc.x<0) {
+      acc.x = 0;
     }
-    if (keyCode == UP || keyCode == DOWN) {
-      applyForce(new PVector(0, 0));
+    if (keyCode == RIGHT&&acc.x>0) {
+      acc.x = 0;
+    }
+    if (keyCode == UP&&acc.x<0) {
+      acc.y = 0;
+    }
+
+    if (keyCode == DOWN&&acc.x>0) {
+      acc.y = 0;
     }
   }
 }
