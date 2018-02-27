@@ -5,6 +5,7 @@ class Attractor {
   int size;
   float G = 0.4;
   PVector vel = new PVector(0, 0);
+  color f = color(0, 0, 0);
   Attractor(int tsize) {
     // pass size
     size = tsize;
@@ -24,10 +25,7 @@ class Attractor {
   }
 
 
-  // display
-  void display() {
-    ellipse(loc.x, loc.y, size, size);
-  }
+  
 
   // check edges and wrap around
   void checkEdges() {

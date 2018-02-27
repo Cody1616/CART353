@@ -1,13 +1,18 @@
 class Ball extends Attractor {
   // mode for different friction coefficients depending on location
   int mode = 1;
-  
+  float m = 1;
   PVector prevAcc = new PVector(0, 0);
 
   Ball(int s) {
     super(s);
+    f = color(200, 100, 100);
   }
-
+// display
+  void display() {
+    fill(f);
+    ellipse(loc.x, loc.y, size*m, size*m);
+  }
   // update, multiply acc by friction, check edges, reset acc
   void update() {
     acc.mult(friction());
@@ -15,6 +20,7 @@ class Ball extends Attractor {
     checkEdges();
     prevAcc = acc;
     acc.mult(0);
+    println(size*m);
   }
 
   // apply force to things
@@ -23,20 +29,19 @@ class Ball extends Attractor {
     PVector f = PVector.sub(loc, other.getLoc());
     //
     float d = f.mag();
-    println(d);
     // norm
     f.normalize();
 
-    if (size>other.getSize() && d<25 && !other.getAtt()) {
+    if (size*m>other.getSize() && d<25 && !other.getAtt()) {
       other.setAtt();
     }
     float strenght = 0;
     if (other.getAtt()) {
       d = constrain(d, 5, 25);
 
-      strenght = (G *2* size*other.size)/(d*d);
+      strenght = (G *2* size*m*other.size)/(d*d);
     } else {
-      strenght = (G * size*other.size)/(d*d);
+      strenght = (G * size*m*other.size)/(d*d);
     }
     f.mult(strenght);
 
@@ -74,6 +79,16 @@ class Ball extends Attractor {
     if (other.getAtt()) {
       other.applyForce(prevAcc.div(other.getSize()));
     }
+  }
+
+
+
+  void setMult(float i) {
+    m=i;
+  }
+  
+  float getSizeB(){
+  return size*m;
   }
 
 

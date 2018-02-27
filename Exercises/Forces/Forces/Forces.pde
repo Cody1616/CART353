@@ -5,17 +5,17 @@ terrain[] t = new terrain[48];
 Ball ball;
 
 // attracted objects
-//Thing objects[] = new Thing[10];
-Thing ob;
+Thing objects[] = new Thing[50];
+//Thing ob;
 
 
 void setup() {
   size(640, 480);
-  ball = new Ball(50);
-  //for (int i = 0; i<objects.length; i++) {
-  //  objects[i] = new Thing(int(random(5, 20)));
-  //}
-  ob = new Thing(20);
+  ball = new Ball(20);
+  for (int i = 0; i<objects.length; i++) {
+    objects[i] = new Thing(int(random(10, 80)));
+  }
+  //ob = new Thing(20);
 
   // setting up tiles
   for (int i = 0; i < 6; i++) {
@@ -49,16 +49,27 @@ void draw() {
   // then display/update
   ball.display();
   ball.update();
-  ball.follow(ob);
+
   //display objects
-  //for (int i = 0; i<objects.length; i++) {
-  //  objects[i].display();
-  //  objects[i].update();
-  //  ball.attract(objects[i]);
-  //}
-  ob.display();
-  ob.update();
-  ob.applyForce(ball.attract(ob));
+  float counter = 0;
+  ball.setMult(1);
+  for (int i = 0; i<objects.length; i++) {
+    if (objects[i].getAtt()) {
+      counter++;
+    }
+  }
+  ball.setMult(counter/10+1);
+
+  for (int i = 0; i<objects.length; i++) {
+    ball.follow(objects[i]);
+    objects[i].display();
+    objects[i].update();
+    objects[i].applyForce(ball.attract(objects[i]));
+  }
+  fill(0);
+  textSize(25);
+  textAlign(CORNER);
+  text("size: "+(ball.getSizeB())+"\ncaught: "+counter, 25, 25);
 }
 
 // go through each tile and check if the ball is on it
