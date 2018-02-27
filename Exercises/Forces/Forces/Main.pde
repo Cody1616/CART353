@@ -1,10 +1,16 @@
 class Main extends Attractor {
   int mode = 1;
-
+  PVector speed = new PVector(0, 0);
+  ;
   Main(int s) {
     super(s);
   }
-
+  void update() {
+    acc.mult(friction());
+    loc.add(acc);
+    checkEdges();
+    acc.mult(0);
+  }
 
 
   PVector attract(Thing other) {
@@ -24,21 +30,24 @@ class Main extends Attractor {
     }
     return f;
   }
+  void applyForce(PVector force) {
+    acc.add(force);
+  }
   void changeMode(int m) {
     mode = m;
   }
 
-  PVector move() {
-    PVector a = new PVector();
+  float friction() {
+    float a = 1;
     switch(mode) {
     case 1: 
-      a = new PVector(10, 10);
+      a = 1;
       break;
     case 2: 
-      a = new PVector(5, 5);
+      a = 0.5;
       break;
     case 3: 
-      a = new PVector(10, floor(random(5, 15)));
+      a = random(0, 2);
       break;
     }
     return a;
@@ -48,27 +57,25 @@ class Main extends Attractor {
 
   void keyPressed() {
     if (keyCode == LEFT) {
-      acc.x = -move().x;
+      applyForce(new PVector(-10, 0));
     }
     if (keyCode == RIGHT) {
-      acc.x = move().x;
+      applyForce(new PVector(10, 0));
     }
     if (keyCode == UP) {
-      acc.y = -move().y;
+      applyForce(new PVector(0, -10));
     }
     if (keyCode == DOWN) {
-      acc.y = move().y;
+      applyForce(new PVector(0, 10));
     }
   }
 
   void keyReleased() {
     if (keyCode == LEFT||keyCode == RIGHT) {
-      acc.x = 0;
-      vel.x = 0;
+      applyForce(new PVector(0, 0));
     }
     if (keyCode == UP || keyCode == DOWN) {
-      acc.y = 0;
-      vel.y = 0;
+      applyForce(new PVector(0, 0));
     }
   }
 }

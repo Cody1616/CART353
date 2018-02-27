@@ -37,7 +37,7 @@ class terrain {
     fill(c);
     rect(x, y, size, size);
   }
-  boolean here(Main m) {
+  boolean onTile(Main m) {
     boolean left = (m.getLoc().x+m.getSize() > x);
     boolean right = (m.getLoc().x < x+size);
     boolean up = (m.getLoc().y +m.getSize() > y);

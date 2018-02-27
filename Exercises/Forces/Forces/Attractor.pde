@@ -1,6 +1,5 @@
 class Attractor {
   PVector acc = new PVector(0, 0);
-  PVector vel = new PVector(0, 0);
   PVector loc;
   int size;
 
@@ -15,9 +14,6 @@ class Attractor {
     return acc;
   }
 
-  PVector getVel() {
-    return vel;
-  }
 
   PVector getLoc() {
     return loc;
@@ -30,12 +26,7 @@ class Attractor {
   void display() {
     ellipse(loc.x, loc.y, size, size);
   }
-
-  void update() {
-    vel.add(acc);
-    loc.add(vel);
-    vel.x = constrain(vel.x, -10, 10);
-    vel.y = constrain(vel.y, -10, 10);
+  void checkEdges() {
     if (loc.x>width) {
       loc.x = 0;
     }
@@ -49,4 +40,6 @@ class Attractor {
       loc.y = height;
     }
   }
+
+
 }

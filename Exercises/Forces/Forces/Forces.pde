@@ -33,6 +33,7 @@ void draw() {
   for (int i = 0; i < t.length; i++) {
     t[i].display();
   }
+  checkGround();
   ball.display();
   ball.update();
   //for (int i = 0; i<objects.length; i++) {
@@ -42,13 +43,14 @@ void draw() {
   //}
   ob.display();
   ob.update();
-  ob.applyF(ball.attract(ob));
+  ob.applyForce(ball.attract(ob));
 }
 
 void checkGround() {
   for (int i=0; i< t.length; i++) {
-    if (t[i].here(ball)) {
+    if (t[i].onTile(ball)) {
       ball.changeMode(t[i].getMode());
+      println(ball.mode);
     }
   }
 }
