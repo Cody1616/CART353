@@ -1,6 +1,8 @@
 class Ball extends Attractor {
   // mode for different friction coefficients depending on location
   int mode = 1;
+  
+  PVector prevAcc = new PVector(0, 0);
 
   Ball(int s) {
     super(s);
@@ -11,28 +13,33 @@ class Ball extends Attractor {
     acc.mult(friction());
     loc.add(acc);
     checkEdges();
+    prevAcc = acc;
     acc.mult(0);
   }
 
   // apply force to things
   PVector attract(Thing other) {
-    //float d = dist(loc.x, loc.y, other.getLoc().x, other.getLoc().y);
-    //if (d<100&&size>other.getSize()) {
-    //  PVector f = other.getAcc().mult(other.getSize());
-    //  f.div(d);
-    //  other.attract(f);
-    //}
     // f is the distance between both objects
     PVector f = PVector.sub(loc, other.getLoc());
-    // magnitude
+    //
     float d = f.mag();
+    println(d);
     // norm
     f.normalize();
-    float strenght = (size*other.size)/(d*d);
-    f.mult(strenght);
-    if (d<25) {
-      d = constrain(d, 5, 25);
+
+    if (size>other.getSize() && d<25 && !other.getAtt()) {
+      other.setAtt();
     }
+    float strenght = 0;
+    if (other.getAtt()) {
+      d = constrain(d, 5, 25);
+
+      strenght = (G *2* size*other.size)/(d*d);
+    } else {
+      strenght = (G * size*other.size)/(d*d);
+    }
+    f.mult(strenght);
+
     return f;
   }
 
@@ -61,6 +68,12 @@ class Ball extends Attractor {
       break;
     }
     return a;
+  }
+
+  void follow(Thing other) {
+    if (other.getAtt()) {
+      other.applyForce(prevAcc.div(other.getSize()));
+    }
   }
 
 

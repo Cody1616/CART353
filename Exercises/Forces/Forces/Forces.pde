@@ -49,6 +49,7 @@ void draw() {
   // then display/update
   ball.display();
   ball.update();
+  ball.follow(ob);
   //display objects
   //for (int i = 0; i<objects.length; i++) {
   //  objects[i].display();
