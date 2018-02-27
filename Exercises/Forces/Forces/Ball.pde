@@ -1,10 +1,12 @@
-class Main extends Attractor {
+class Ball extends Attractor {
+  // mode for different friction coefficients depending on location
   int mode = 1;
-  PVector speed = new PVector(0, 0);
-  ;
-  Main(int s) {
+
+  Ball(int s) {
     super(s);
   }
+
+  // update, multiply acc by friction, check edges, reset acc
   void update() {
     acc.mult(friction());
     loc.add(acc);
@@ -12,7 +14,7 @@ class Main extends Attractor {
     acc.mult(0);
   }
 
-
+  // apply force to things
   PVector attract(Thing other) {
     //float d = dist(loc.x, loc.y, other.getLoc().x, other.getLoc().y);
     //if (d<100&&size>other.getSize()) {
@@ -20,8 +22,11 @@ class Main extends Attractor {
     //  f.div(d);
     //  other.attract(f);
     //}
+    // f is the distance between both objects
     PVector f = PVector.sub(loc, other.getLoc());
+    // magnitude
     float d = f.mag();
+    // norm
     f.normalize();
     float strenght = (size*other.size)/(d*d);
     f.mult(strenght);
@@ -30,13 +35,18 @@ class Main extends Attractor {
     }
     return f;
   }
+
+  // apply force
   void applyForce(PVector force) {
     acc.add(force);
   }
+
+  //
   void changeMode(int m) {
     mode = m;
   }
 
+  // check mode, then return friction
   float friction() {
     float a = 1;
     switch(mode) {

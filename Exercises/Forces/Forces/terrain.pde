@@ -1,13 +1,18 @@
 class terrain {
+  
+  // size, loc, mode, c
   int size = 80;
   int x;
   int y;
   int mode;
   color c;
+  
+  
   terrain(int tx, int ty, int tm) {
     mode = tm;
     x = tx;
     y = ty;
+    colorswitch(); //checking color
   }
 
   int getMode() {
@@ -32,12 +37,14 @@ class terrain {
   }
 
   void display() {
-    colorswitch();
     rectMode(CORNER);
     fill(c);
     rect(x, y, size, size);
   }
-  boolean onTile(Main m) {
+  
+  
+  // check if a Ball object is on the tile
+  boolean onTile(Ball m) {
     boolean left = (m.getLoc().x+m.getSize() > x);
     boolean right = (m.getLoc().x < x+size);
     boolean up = (m.getLoc().y +m.getSize() > y);
