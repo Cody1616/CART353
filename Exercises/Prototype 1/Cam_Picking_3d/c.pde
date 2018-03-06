@@ -22,7 +22,8 @@ class Cube {
     fill(c);
     pushMatrix();
     translate(x, y, z);
-    box(w);
+    noStroke();
+    sphere(w);
     popMatrix();
   }
 }

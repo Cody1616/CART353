@@ -49,5 +49,6 @@ void mouseClicked() {
   int id = picker.get(mouseX, mouseY); //get whats at the mouse location
   if (id > -1) { //if its there
     cubes[id].changeColor();
+    println(id);
   }
 }
