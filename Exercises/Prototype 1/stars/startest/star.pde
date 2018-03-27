@@ -1,32 +1,31 @@
 class star {
   int r;
+  PVector position2D = new PVector(0, 0, 0);
   PVector p = new PVector(0, 0, 0);
-  PVector place = new PVector(0, 0, 0);
   int size;
 
   boolean hover = false;
   boolean click = false;
 
-  color f = color(255);
+  color f = color(255, 255, 255);
 
   star(int tr) {
     r = tr;
-    p.x = random(-TWO_PI, TWO_PI);
-    p.y = random(-HALF_PI, HALF_PI);
+    position2D.x = random(-TWO_PI, TWO_PI);
+    position2D.y = random(-HALF_PI, HALF_PI);
 
-    place.x = r*sin(p.x)*cos(p.y);
-    place.y = r*sin(p.x)*sin(p.y);
-    place.z = r*cos(p.x);
+    p.x = r*sin(position2D.x)*cos(position2D.y);
+    p.y = r*sin(position2D.x)*sin(position2D.y);
+    p.z = r*cos(position2D.x);
     size = int(random(10, 20));
   }
 
   void display() {
     pushMatrix();
-    translate(place.x, place.y, place.z);
-    fill(f);
+    translate(p.x, p.y, p.z);
+    fill(255, 255, 255);
     noStroke();
-    //shininess(500);
-    sphere(size);
+    ellipse(0, 0, size, size);
     popMatrix();
 
 
@@ -35,11 +34,7 @@ class star {
     //line(place.x, place.y, place.z, 0, 0, 0);
   }
   void changeColor() {
-    f = color(
-      int(random(0, 255)), 
-      int(random(0, 255)), 
-      int(random(0, 255))
-      );
+
   }
 
   void mouseClicked() {
@@ -47,10 +42,10 @@ class star {
 
   void mouseDragged() {
     stroke(20);
-    line(p.x, p.y, mouseX, mouseY);
+    line(position2D.x, position2D.y, mouseX, mouseY);
   }
 
   PVector getPosition() {
-    return p;
+    return position2D;
   }
 }
