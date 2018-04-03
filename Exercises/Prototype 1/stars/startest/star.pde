@@ -21,25 +21,24 @@ class star {
   }
 
   void display() {
-    pushMatrix();
-    translate(p.x, p.y, p.z);
-    fill(255, 255, 255);
-    noStroke();
-    ellipse(0, 0, size, size);
-    popMatrix();
-
-
-    //fill(255);
-    //stroke(20);
-    //line(place.x, place.y, place.z, 0, 0, 0);
+    if (starmode) {
+      pushMatrix();
+      translate(p.x, p.y, p.z);
+      fill(255, 255, 255);
+      noStroke();
+      ellipse(0, 0, size, size);
+      popMatrix();
+    }
+    else {
+      float x = map(position2D.x, -TWO_PI, TWO_PI, 0, width);
+      float y = map(position2D.x, -HALF_PI, HALF_PI, 0, height);
+      fill(255, 255, 255);
+      noStroke();
+      ellipse(x, y, size, size);
+    
+    
+    }
   }
-  void changeColor() {
-
-  }
-
-  void mouseClicked() {
-  }
-
   void mouseDragged() {
     stroke(20);
     line(position2D.x, position2D.y, mouseX, mouseY);
