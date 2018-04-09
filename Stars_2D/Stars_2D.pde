@@ -16,6 +16,10 @@ ArrayList<Connector> connectors = new ArrayList<Connector>();
 
 ArrayList<Constellation> stells = new ArrayList<Constellation>();
 
+ArrayList<PVector> mouseDrawing = new ArrayList<PVector>();
+
+ArrayList<drawing> doodles = new ArrayList<drawing>();
+
 // set last star ID to -1 (ie no star selected)
 int lastStarID = -1;
 
@@ -41,6 +45,7 @@ void draw() {
   } else {
     background(0);
   }
+
   for (int i = 0; i<stars.length; i++) {
     stars[i].display();
     stars[i].move(plx);
@@ -56,6 +61,18 @@ void draw() {
   for (int i = 0; i< stells.size(); i++) {
     Constellation c = stells.get(i);
     c.display();
+  }
+  for (int i = 1; i<mouseDrawing.size(); i++) {
+    PVector v1 = mouseDrawing.get(i);
+    PVector v2 = mouseDrawing.get(i-1);
+    strokeWeight(1);
+    stroke(255);
+    line(v1.x, v1.y, v2.x, v2.y);
+  }
+  for (int i = 0; i<doodles.size(); i++) {
+    drawing d1 = doodles.get(i);
+    d1.display();
+    d1.move();
   }
 }
 
@@ -73,7 +90,10 @@ void drawPanel() {
 
   stroke(255);
   if (mousePressed == true) {
+    stroke(255);
+    strokeWeight(1);
     line(mouseX, mouseY, pmouseX, pmouseY);
+    mouseDrawing.add(new PVector(mouseX, mouseY));
   }
 }
 
@@ -119,6 +139,7 @@ void mousePressed() {
   for (int i = 0; i<stars.length; i++) {
     if (stars[i].onStar()) {
       if (lastStarID > -1) {
+        println("CONNECT");
         connectors.add(new Connector(stars[lastStarID], stars[i]));
         lastStarID = -1;
       } else if (lastStarID <= -1) {
@@ -126,5 +147,14 @@ void mousePressed() {
         break;
       }
     }
+  }
+}
+void mouseReleased() {
+  if (drawing) {
+    println("NEW");
+    drawing c = new drawing();
+    c.sketch.addAll(mouseDrawing);
+    doodles.add(c);
+    mouseDrawing.clear();
   }
 }
