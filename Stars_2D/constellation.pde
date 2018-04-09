@@ -19,12 +19,17 @@ class Constellation {
       Connector c = lines.get(i);
       stroke(0, 0, 200, 100);
       strokeWeight(50);
-      line(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y);
-      if (mouse()) {
-        stroke(200);
-        strokeWeight(10);
+      if (dist(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y) < 1000) {
         line(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y);
+        if (mouse()) {
+          stroke(200);
+          strokeWeight(10);
+          line(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y);
+          fill(255);
+          text(name, mouseX, mouseY);
+        }
       }
+
       c.display();
     }
   }

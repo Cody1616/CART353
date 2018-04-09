@@ -4,24 +4,36 @@ class Star {
 
   float size;
 
+  float aura;
+  float angle;
 
+  String name;
 
   Star(PVector tp, float ts) {
 
     p = tp;
     size = ts;
+    angle = random(PI/10, PI);
+    aura = 0;
+  }
+  void changeName(String n) {
+    name = n;
   }
 
 
   void display() {
-    if (onStar()) {
-      stroke(255);
-    } else {
-      noStroke();
-    }
+    noStroke();
     fill(255);
     ellipseMode(CENTER);
     ellipse(p.x, p.y, size, size);
+    aura=(sin(angle)+size*2);
+    if (onStar()) {
+      fill(255);
+    } else {
+      fill(255, 100);
+    }
+    ellipse(p.x, p.y, aura, aura);
+    angle+=PI/60;
   }
 
   boolean onStar() {

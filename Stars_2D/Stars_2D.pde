@@ -20,6 +20,8 @@ ArrayList<PVector> mouseDrawing = new ArrayList<PVector>();
 
 ArrayList<drawing> doodles = new ArrayList<drawing>();
 
+Planet[] planets = new Planet[10];
+
 // set last star ID to -1 (ie no star selected)
 int lastStarID = -1;
 
@@ -28,12 +30,16 @@ boolean drawing = false;
 
 //________________________________S E T U P_____________________________________________
 void setup() {
-  size(800, 800);
-  //fullScreen();
+  //size(640, 480);
+  fullScreen();
   areaMax = new PVector(width+1000, height+1000);
   areaMin = new PVector(-1000, -1000);
   for (int i = 0; i<stars.length; i++) {
     stars[i] = new Star(new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(4, 8));
+  }
+
+  for (int i = 0; i<planets.length; i++) {
+    planets[i] = new Planet(color(random(0, 255), random(0, 255), random(0, 255)), new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(20, 50), random(PI/1000, PI/100));
   }
 }
 
@@ -73,6 +79,14 @@ void draw() {
     drawing d1 = doodles.get(i);
     d1.display();
     d1.move();
+  }
+  
+
+  for (int i = 0; i<planets.length; i++) {
+    planets[i].display();
+    planets[i].travel();
+    
+    
   }
 }
 
