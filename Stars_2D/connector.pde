@@ -11,13 +11,15 @@ class Connector {
 
   void display() {
     stroke(240);
-    
+
     if (mouseOn()) {
       strokeWeight(4);
     } else {
       strokeWeight(2);
     }
-    line(s1.getPosition().x, s1.getPosition().y, s2.getPosition().x, s2.getPosition().y);
+    if (!offScreen()) {
+      line(s1.getPosition().x, s1.getPosition().y, s2.getPosition().x, s2.getPosition().y);
+    }
   }
 
 
@@ -31,6 +33,18 @@ class Connector {
     float b = y1-(x1*m);
 
     if ((mouseY - m*(mouseX)) - b >-5 && (mouseY - m*(mouseX)) - b < 5) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  boolean offScreen() {
+
+    // if one of the stars is too far from another, dont draw the line
+
+    if (dist(s1.getPosition().x, s1.getPosition().y, s2.getPosition().x, s2.getPosition().y)>1000) {
+
       return true;
     } else {
       return false;

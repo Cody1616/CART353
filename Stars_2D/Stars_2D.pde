@@ -3,7 +3,12 @@
 
 
 Star stars[] = new Star[300];
+
+
+// parralax (?) - how much the "camera" moves around when the keys are pressed
 PVector plx = new PVector(0, 0);
+
+// area - bigger than window, so it loops around
 PVector areaMax;
 PVector areaMin;
 
@@ -11,14 +16,18 @@ ArrayList<Connector> connectors = new ArrayList<Connector>();
 
 ArrayList<Constellation> stells = new ArrayList<Constellation>();
 
+// set last star ID to -1 (ie no star selected)
 int lastStarID = -1;
+
+boolean drawing = false;
+
 
 //________________________________S E T U P_____________________________________________
 void setup() {
   size(800, 800);
   //fullScreen();
-  areaMax = new PVector(width+500, height+500);
-  areaMin = new PVector(-500, -500);
+  areaMax = new PVector(width+1000, height+1000);
+  areaMin = new PVector(-1000, -1000);
   for (int i = 0; i<stars.length; i++) {
     stars[i] = new Star(new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(4, 8));
   }
@@ -26,8 +35,12 @@ void setup() {
 
 //________________________________D R A W_______________________________________________
 void draw() {
- 
-  background(0);
+  if (drawing) {
+    background(0, 0, 100);
+    drawPanel();
+  } else {
+    background(0);
+  }
   for (int i = 0; i<stars.length; i++) {
     stars[i].display();
     stars[i].move(plx);
@@ -54,6 +67,15 @@ void createConst() {
   stells.add(c);
   connectors.clear();
 }
+//________________________________DRAW________________________________________
+
+void drawPanel() {
+
+  stroke(255);
+  if (mousePressed == true) {
+    line(mouseX, mouseY, pmouseX, pmouseY);
+  }
+}
 
 //________________________________KEYBOARD STUFF________________________________________
 void keyPressed() {
@@ -75,6 +97,9 @@ void keyPressed() {
       println("CONSTELLATION CREATED");
       createConst();
     }
+  }
+  if (key == ' ') {
+    drawing = !drawing;
   }
 }
 

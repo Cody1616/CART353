@@ -20,14 +20,15 @@ class Star {
       noStroke();
     }
     fill(255);
+    ellipseMode(CENTER);
     ellipse(p.x, p.y, size, size);
   }
 
   boolean onStar() {
-    if (mouseX > p.x 
-      && mouseX < p.x+size
-      && mouseY > p.y
-      && mouseY < p.y+size) {
+    if (mouseX > p.x -size/2
+      && mouseX < p.x+size/2
+      && mouseY > p.y - size/2
+      && mouseY < p.y+size/2) {
       return true;
     } else {
       return false;
