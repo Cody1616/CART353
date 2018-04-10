@@ -2,7 +2,7 @@
 //________________________________INITIALIZATION________________________________________
 
 
-Star stars[] = new Star[300];
+Star stars[] = new Star[200];
 
 
 // parralax (?) - how much the "camera" moves around when the keys are pressed
@@ -39,7 +39,7 @@ void setup() {
   }
 
   for (int i = 0; i<planets.length; i++) {
-    planets[i] = new Planet(color(random(0, 255), random(0, 255), random(0, 255)), new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(20, 50), random(PI/1000, PI/100));
+    planets[i] = new Planet(color(random(0, 255), random(0, 255), random(0, 255)), new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(20, 50), random(-0.5, 0.5));
   }
 }
 
@@ -86,6 +86,10 @@ void draw() {
     planets[i].display();
     planets[i].travel();
   }
+  textAlign(CORNER);
+  textSize(15);
+  fill(200, 200, 255);
+  text("Arrow keys to move\nClick a star and drag to make a connection\nPress A to make a constellation\nRight click constellations and planets to rename them\nPress SHIFT to draw on top of constellation/celestial bodies", 20, 20);
 }
 
 //________________________________C O N S T E L L A T I O N_____________________________
@@ -140,6 +144,26 @@ void keyPressed() {
   for (int i = 0; i<planets.length; i++) {
     planets[i].keyPressed();
   }
+  if (keyCode == DELETE) {
+    for (int i = 0; i <connectors.size(); i++) {
+      Connector c = connectors.get(i);
+      if(c.mouseOn()){
+      connectors.remove(i);
+      
+      }
+    }
+
+    for (int i = 0; i <stells.size(); i++) {
+      Constellation s = stells.get(i);
+      for (int j = 0; j< s.lines.size(); j++) {
+
+        Connector c = s.lines.get(j);
+        if(c.mouseOn()){
+        s.lines.remove(j);
+        }
+      }
+    }
+  }
 }
 
 //________________________________MORE KEYBOARD STUFF___________________________________
@@ -157,11 +181,7 @@ void keyReleased() {
 void mousePressed() {
   for (int i = 0; i<stars.length; i++) {
     if (stars[i].onStar()) {
-      if (lastStarID > -1) {
-        println("CONNECT");
-        connectors.add(new Connector(stars[lastStarID], stars[i]));
-        lastStarID = -1;
-      } else if (lastStarID <= -1) {
+      if (lastStarID <= -1) {
         lastStarID = i;
         break;
       }
@@ -183,4 +203,11 @@ void mouseReleased() {
     doodles.add(c);
     mouseDrawing.clear();
   }
+  for (int i = 0; i<stars.length; i++) {
+    if (stars[i].onStar() && lastStarID > -1) {
+      println("CONNECT");
+      connectors.add(new Connector(stars[lastStarID], stars[i]));
+    }
+  }
+  lastStarID = -1;
 }

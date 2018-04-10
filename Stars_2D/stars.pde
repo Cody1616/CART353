@@ -37,10 +37,10 @@ class Star {
   }
 
   boolean onStar() {
-    if (mouseX > p.x -size/2
-      && mouseX < p.x+size/2
-      && mouseY > p.y - size/2
-      && mouseY < p.y+size/2) {
+    if (mouseX > p.x -size
+      && mouseX < p.x+size
+      && mouseY > p.y - size
+      && mouseY < p.y+size) {
       return true;
     } else {
       return false;
