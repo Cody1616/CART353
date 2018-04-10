@@ -32,8 +32,29 @@ class Connector {
     float m = (y2 - y1)/(x2 - x1);
     float b = y1-(x1*m);
 
+
+
+
     if ((mouseY - m*(mouseX)) - b >-5 && (mouseY - m*(mouseX)) - b < 5) {
-      return true;
+      if (x1<x2) {
+        float x3 = x2;
+        x2 = x1;
+        x1 = x3;
+      }
+      if (y1<y2) {
+        float y3 = y2;
+        y2 = y1;
+        y1 = y3;
+      }
+
+
+
+
+      if (mouseX>x2 && mouseX <x1 && mouseY>y2 && mouseY < y1) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

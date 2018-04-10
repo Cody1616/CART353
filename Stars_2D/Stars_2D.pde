@@ -80,13 +80,11 @@ void draw() {
     d1.display();
     d1.move();
   }
-  
+
 
   for (int i = 0; i<planets.length; i++) {
     planets[i].display();
     planets[i].travel();
-    
-    
   }
 }
 
@@ -132,8 +130,15 @@ void keyPressed() {
       createConst();
     }
   }
-  if (key == ' ') {
+  if (keyCode == SHIFT) {
     drawing = !drawing;
+  }
+  for (int i = 0; i<stells.size(); i++) {
+    Constellation c = stells.get(i);
+    c.keyPressed();
+  }
+  for (int i = 0; i<planets.length; i++) {
+    planets[i].keyPressed();
   }
 }
 
@@ -161,6 +166,13 @@ void mousePressed() {
         break;
       }
     }
+  }
+  for (int i = 0; i<stells.size(); i++) {
+    Constellation c = stells.get(i);
+    c.mousePressed();
+  }
+  for (int i = 0; i<planets.length; i++) {
+    planets[i].mousePressed();
   }
 }
 void mouseReleased() {
