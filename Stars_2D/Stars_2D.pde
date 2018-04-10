@@ -52,10 +52,7 @@ void draw() {
     background(0);
   }
 
-  for (int i = 0; i<stars.length; i++) {
-    stars[i].display();
-    stars[i].move(plx);
-  }
+  
   if (lastStarID>-1) {
     stroke(200);
     line(stars[lastStarID].getPosition().x, stars[lastStarID].getPosition().y, mouseX, mouseY);
@@ -79,6 +76,10 @@ void draw() {
     drawing d1 = doodles.get(i);
     d1.display();
     d1.move();
+  }
+  for (int i = 0; i<stars.length; i++) {
+    stars[i].display();
+    stars[i].move(plx);
   }
 
 
@@ -147,8 +148,9 @@ void keyPressed() {
   if (keyCode == DELETE) {
     for (int i = 0; i <connectors.size(); i++) {
       Connector c = connectors.get(i);
-      if (c.mouseOn()) {
-        connectors.remove(i);
+      if(c.mouseOn()){
+      connectors.remove(i);
+      
       }
     }
 
@@ -157,8 +159,8 @@ void keyPressed() {
       for (int j = 0; j< s.lines.size(); j++) {
 
         Connector c = s.lines.get(j);
-        if (c.mouseOn()) {
-          s.lines.remove(j);
+        if(c.mouseOn()){
+        s.lines.remove(j);
         }
       }
     }
@@ -195,13 +197,14 @@ void mousePressed() {
   }
 }
 
-void mouseDragged() {
-  for (int i = 0; i<stars.length; i++) {
-    if (stars[i].onStar() && lastStarID > -1) {
-      connectors.add(new Connector(stars[lastStarID], stars[i]));
-      lastStarID = i;
+void mouseDragged(){
+for (int i = 0; i<stars.length; i++) {
+    if (stars[i].onStar() && lastStarID > -1){
+    connectors.add(new Connector(stars[lastStarID], stars[i]));
+    lastStarID = i;}
+    
     }
-  }
+
 }
 void mouseReleased() {
   if (drawing) {
