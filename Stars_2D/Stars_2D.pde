@@ -1,6 +1,7 @@
 //CODY GAUDET - CONSTELLATION MAPPER
 //________________________________INITIALIZATION________________________________________
 
+boolean picMode = false;
 
 Star stars[] = new Star[200];
 
@@ -32,8 +33,8 @@ boolean drawing = false;
 void setup() {
   //size(640, 480);
   fullScreen();
-  areaMax = new PVector(width+1000, height+1000);
-  areaMin = new PVector(-1000, -1000);
+  areaMax = new PVector(width*2, height*2);
+  areaMin = new PVector(-width*2, -height*2);
   for (int i = 0; i<stars.length; i++) {
     stars[i] = new Star(new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(4, 8));
   }

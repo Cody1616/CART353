@@ -15,7 +15,7 @@ class Planet {
 
   void travel() {
     p.x +=orbit;
-    //p.y += sin(p.x)/20;
+    p.y += sin((2*PI/areaMax.x)*p.x)/50;
     p.add(plx);
     p.add(plx);
     //orbit+=PI/100;
@@ -23,8 +23,10 @@ class Planet {
   }
 
   void display() {
+
     if (mouseOn()) {
-      stroke(2);
+      stroke(255);
+      strokeWeight(2);
     } else {
       noStroke();
     }
@@ -52,20 +54,29 @@ class Planet {
     name = n;
   }
 
+  void drawPath() {
+    //for (int i = int(areaMin.x); i < areaMax.x; i++) {
+    //  float j = sin((2*PI/areaMax.x)*i)/50;
+    //  stroke(c);
+    //  point(i, j);
+    //}
+  }
+
 
   void loop() {
 
+
     if (p.x < areaMin.x) {
-      p.x += areaMax.x;
+      p.x += areaMax.x-areaMin.x;
     }
     if (p.y < areaMin.y) {
-      p.y += areaMax.y;
+      p.y += areaMax.y-areaMin.y;
     }
     if (p.x > areaMax.x) {
-      p.x-= areaMax.x;
+      p.x-= areaMax.x-areaMin.x;
     }
     if (p.y> areaMax.y) {
-      p.y-= areaMax.y;
+      p.y-= areaMax.y-areaMin.y;
     }
   }
 
