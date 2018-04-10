@@ -147,9 +147,8 @@ void keyPressed() {
   if (keyCode == DELETE) {
     for (int i = 0; i <connectors.size(); i++) {
       Connector c = connectors.get(i);
-      if(c.mouseOn()){
-      connectors.remove(i);
-      
+      if (c.mouseOn()) {
+        connectors.remove(i);
       }
     }
 
@@ -158,8 +157,8 @@ void keyPressed() {
       for (int j = 0; j< s.lines.size(); j++) {
 
         Connector c = s.lines.get(j);
-        if(c.mouseOn()){
-        s.lines.remove(j);
+        if (c.mouseOn()) {
+          s.lines.remove(j);
         }
       }
     }
@@ -193,6 +192,15 @@ void mousePressed() {
   }
   for (int i = 0; i<planets.length; i++) {
     planets[i].mousePressed();
+  }
+}
+
+void mouseDragged() {
+  for (int i = 0; i<stars.length; i++) {
+    if (stars[i].onStar() && lastStarID > -1) {
+      connectors.add(new Connector(stars[lastStarID], stars[i]));
+      lastStarID = i;
+    }
   }
 }
 void mouseReleased() {
