@@ -1,53 +1,56 @@
-class Planet {
+class Planet extends CeOb {
   color c;
-  PVector p;
-  float size;
   float orbit;
   String name = "???";
   boolean text = false;
 
-  Planet(color tc, PVector tp, float ts, float to) {
+  float amp;
+
+  Planet(color tc, PVector tp, float ts, float to, float ta) {
     c = tc;
     p = tp;
     size = ts;
     orbit = to;
+    amp = ta;
   }
 
   void travel() {
     p.x +=orbit;
-    p.y += sin((2*PI/(areaMax.x-areaMin.x))*p.x)/50;
+    p.y += amp*sin((2*PI/(areaMax.x-areaMin.x))*p.x)/50 ;
     p.add(plx);
     p.add(plx);
-    //orbit+=PI/100;
-    loop();
+    checkEdge();
   }
 
   void display() {
 
-    if (mouseOn()) {
-      stroke(255);
-      strokeWeight(2);
-    } else {
-      noStroke();
-    }
-    fill(c);
-    ellipse(p.x, p.y, size, size);
-    if (mouseOn()) {
-      fill(255);
-      text(name, mouseX, mouseY);
-    }
-    if (text) {
+    if (!picMode) {
 
-      fill(100);
-      stroke(255);
-      rectMode(CENTER);
-      rect(width/2, height/2, 200, 100);
-      fill(255);
-      textSize(30);
-      textAlign(CENTER);
-      text(name, width/2, height/2);
+      if (mouseOn()) {
+        stroke(255);
+        strokeWeight(2);
+      } else {
+        noStroke();
+      }
+      fill(c);
+      ellipse(p.x, p.y, size, size);
+      if (mouseOn()) {
+        fill(255);
+        text(name, mouseX, mouseY);
+      }
+      if (text) {
 
-      text("please type new name\npress ENTER to save new name", width/2, height/3*2);
+        fill(100);
+        stroke(255);
+        rectMode(CENTER);
+        rect(width/2, height/2, 200, 100);
+        fill(255);
+        textSize(30);
+        textAlign(CENTER);
+        text(name, width/2, height/2);
+
+        text("please type new name\npress ENTER to save new name", width/2, height/3*2);
+      }
     }
   }
   void changeName(String n) {
@@ -62,34 +65,6 @@ class Planet {
     //}
   }
 
-
-  void loop() {
-
-
-    if (p.x < areaMin.x) {
-      p.x += areaMax.x-areaMin.x;
-    }
-    if (p.y < areaMin.y) {
-      p.y += areaMax.y-areaMin.y;
-    }
-    if (p.x > areaMax.x) {
-      p.x-= areaMax.x-areaMin.x;
-    }
-    if (p.y> areaMax.y) {
-      p.y-= areaMax.y-areaMin.y;
-    }
-  }
-
-  boolean mouseOn() {
-    if (mouseX > p.x -size/2
-      && mouseX < p.x+size/2
-      && mouseY > p.y - size/2
-      && mouseY < p.y+size/2) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   void mousePressed() {
     if (mouseButton == RIGHT && mouseOn()) {

@@ -40,7 +40,7 @@ void setup() {
   }
 
   for (int i = 0; i<planets.length; i++) {
-    planets[i] = new Planet(color(random(0, 255), random(0, 255), random(0, 255)), new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(20, 50), random(-0.5, 0.5));
+    planets[i] = new Planet(color(random(0, 255), random(0, 255), random(0, 255)), new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(20, 50), random(-0.5, 0.5), random(0, 5));
   }
 }
 
@@ -53,7 +53,7 @@ void draw() {
     background(0);
   }
 
-  
+
   if (lastStarID>-1) {
     stroke(200);
     line(stars[lastStarID].getPosition().x, stars[lastStarID].getPosition().y, mouseX, mouseY);
@@ -146,12 +146,14 @@ void keyPressed() {
   for (int i = 0; i<planets.length; i++) {
     planets[i].keyPressed();
   }
+  if (keyCode == CONTROL && drawing) {
+    doodles.remove(doodles.size()-1);
+  }
   if (keyCode == DELETE) {
     for (int i = 0; i <connectors.size(); i++) {
       Connector c = connectors.get(i);
-      if(c.mouseOn()){
-      connectors.remove(i);
-      
+      if (c.mouseOn()) {
+        connectors.remove(i);
       }
     }
 
@@ -160,8 +162,8 @@ void keyPressed() {
       for (int j = 0; j< s.lines.size(); j++) {
 
         Connector c = s.lines.get(j);
-        if(c.mouseOn()){
-        s.lines.remove(j);
+        if (c.mouseOn()) {
+          s.lines.remove(j);
         }
       }
     }
@@ -182,7 +184,7 @@ void keyReleased() {
 //________________________________MOUSE STUFF________________________________________
 void mousePressed() {
   for (int i = 0; i<stars.length; i++) {
-    if (stars[i].onStar()) {
+    if (stars[i].mouseOn()) {
       if (lastStarID <= -1) {
         lastStarID = i;
         break;
@@ -198,14 +200,13 @@ void mousePressed() {
   }
 }
 
-void mouseDragged(){
-for (int i = 0; i<stars.length; i++) {
-    if (stars[i].onStar() && lastStarID > -1){
-    connectors.add(new Connector(stars[lastStarID], stars[i]));
-    lastStarID = i;}
-    
+void mouseDragged() {
+  for (int i = 0; i<stars.length; i++) {
+    if (stars[i].mouseOn() && lastStarID > -1) {
+      connectors.add(new Connector(stars[lastStarID], stars[i]));
+      lastStarID = i;
     }
-
+  }
 }
 void mouseReleased() {
   if (drawing) {
@@ -216,7 +217,7 @@ void mouseReleased() {
     mouseDrawing.clear();
   }
   for (int i = 0; i<stars.length; i++) {
-    if (stars[i].onStar() && lastStarID > -1) {
+    if (stars[i].mouseOn() && lastStarID > -1) {
       println("CONNECT");
       connectors.add(new Connector(stars[lastStarID], stars[i]));
     }

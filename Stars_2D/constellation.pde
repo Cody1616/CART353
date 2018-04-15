@@ -1,7 +1,6 @@
 class Constellation {
   ArrayList<Connector> lines = new ArrayList<Connector>();
   String name;
-
   boolean text = false;
 
   Constellation() {
