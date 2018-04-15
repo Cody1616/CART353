@@ -15,7 +15,7 @@ class Planet {
 
   void travel() {
     p.x +=orbit;
-    p.y += sin((2*PI/areaMax.x)*p.x)/50;
+    p.y += sin((2*PI/(areaMax.x-areaMin.x))*p.x)/50;
     p.add(plx);
     p.add(plx);
     //orbit+=PI/100;
