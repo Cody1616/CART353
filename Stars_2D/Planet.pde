@@ -24,35 +24,34 @@ class Planet extends CeOb {
 
   void display() {
 
-    if (!picMode) {
 
-      if (mouseOn()) {
-        stroke(255);
-        strokeWeight(2);
-      } else {
-        noStroke();
-      }
-      fill(c);
-      ellipse(p.x, p.y, size, size);
-      if (mouseOn()) {
-        fill(255);
-        text(name, mouseX, mouseY);
-      }
-      if (text) {
+    if (mouseOn() &&!picMode) {
+      stroke(255);
+      strokeWeight(2);
+    } else {
+      noStroke();
+    }
+    fill(c);
+    ellipse(p.x, p.y, size, size);
+    if (mouseOn() &&!picMode) {
+      fill(255);
+      text(name, mouseX, mouseY);
+    }
+    if (text && !picMode) {
 
-        fill(100);
-        stroke(255);
-        rectMode(CENTER);
-        rect(width/2, height/2, 200, 100);
-        fill(255);
-        textSize(30);
-        textAlign(CENTER);
-        text(name, width/2, height/2);
+      fill(100);
+      stroke(255);
+      rectMode(CENTER);
+      rect(width/2, height/2, 200, 100);
+      fill(255);
+      textSize(30);
+      textAlign(CENTER);
+      text(name, width/2, height/2);
 
-        text("please type new name\npress ENTER to save new name", width/2, height/3*2);
-      }
+      text("please type new name\npress ENTER to save new name", width/2, height/3*2);
     }
   }
+
   void changeName(String n) {
     name = n;
   }

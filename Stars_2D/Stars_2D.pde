@@ -117,53 +117,65 @@ void drawPanel() {
 
 //________________________________KEYBOARD STUFF________________________________________
 void keyPressed() {
-  if (keyCode == LEFT) {
-    plx.x = 10;
-  }
-  if (keyCode == RIGHT) {
-    plx.x = -10;
-  }
-  if (keyCode == UP) {
-    plx.y = 10;
-  }
-  if (keyCode == DOWN) {
-    plx.y = -10;
-  }
-
-  if (key == 'a') {
-    if (!connectors.isEmpty()) {
-      println("CONSTELLATION CREATED");
-      createConst();
+  if (key == 'q') {
+    picMode = !picMode;
+    for (int i = 0; i < stars.length; i++) {
+      stars[i].mapToPic();
+    }
+    for (int i = 0; i < planets.length; i++) {
+      planets[i].mapToPic();
     }
   }
-  if (keyCode == SHIFT) {
-    drawing = !drawing;
-  }
-  for (int i = 0; i<stells.size(); i++) {
-    Constellation c = stells.get(i);
-    c.keyPressed();
-  }
-  for (int i = 0; i<planets.length; i++) {
-    planets[i].keyPressed();
-  }
-  if (keyCode == CONTROL && drawing) {
-    doodles.remove(doodles.size()-1);
-  }
-  if (keyCode == DELETE) {
-    for (int i = 0; i <connectors.size(); i++) {
-      Connector c = connectors.get(i);
-      if (c.mouseOn()) {
-        connectors.remove(i);
+
+  if (!picMode) {
+    if (keyCode == LEFT) {
+      plx.x = 10;
+    }
+    if (keyCode == RIGHT) {
+      plx.x = -10;
+    }
+    if (keyCode == UP) {
+      plx.y = 10;
+    }
+    if (keyCode == DOWN) {
+      plx.y = -10;
+    }
+
+    if (key == 'a') {
+      if (!connectors.isEmpty()) {
+        println("CONSTELLATION CREATED");
+        createConst();
       }
     }
-
-    for (int i = 0; i <stells.size(); i++) {
-      Constellation s = stells.get(i);
-      for (int j = 0; j< s.lines.size(); j++) {
-
-        Connector c = s.lines.get(j);
+    if (keyCode == SHIFT) {
+      drawing = !drawing;
+    }
+    for (int i = 0; i<stells.size(); i++) {
+      Constellation c = stells.get(i);
+      c.keyPressed();
+    }
+    for (int i = 0; i<planets.length; i++) {
+      planets[i].keyPressed();
+    }
+    if (keyCode == CONTROL && drawing) {
+      doodles.remove(doodles.size()-1);
+    }
+    if (keyCode == DELETE) {
+      for (int i = 0; i <connectors.size(); i++) {
+        Connector c = connectors.get(i);
         if (c.mouseOn()) {
-          s.lines.remove(j);
+          connectors.remove(i);
+        }
+      }
+
+      for (int i = 0; i <stells.size(); i++) {
+        Constellation s = stells.get(i);
+        for (int j = 0; j< s.lines.size(); j++) {
+
+          Connector c = s.lines.get(j);
+          if (c.mouseOn()) {
+            s.lines.remove(j);
+          }
         }
       }
     }
