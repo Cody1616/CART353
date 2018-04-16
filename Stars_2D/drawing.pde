@@ -26,7 +26,7 @@ class drawing {
   }
 
   void loop(PVector p) {
-    
+
     if (p.x < areaMin.x) {
       p.x += areaMax.x-areaMin.x;
     }
@@ -38,6 +38,18 @@ class drawing {
     }
     if (p.y> areaMax.y) {
       p.y-= areaMax.y-areaMin.y;
+    }
+  }
+  void mapToPic() {
+    for (int i = 0; i < sketch.size(); i++) {
+      PVector p = sketch.get(i);
+      if (!picMode) {
+        p.x = map(p.x, 0, width, areaMin.x, areaMax.x);
+        p.y = map(p.y, 0, height, areaMin.y, areaMax.y);
+      } else if (picMode) {
+        p.x = map(p.x, areaMin.x, areaMax.x, 0, width);
+        p.y= map(p.y, areaMin.y, areaMax.y, 0, height);
+      }
     }
   }
 }

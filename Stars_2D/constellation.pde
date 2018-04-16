@@ -19,7 +19,11 @@ class Constellation {
       } else {
         stroke(0, 0, 100);
       }
-      strokeWeight(50);
+      if (picMode) {
+        strokeWeight(20);
+      } else {
+        strokeWeight(50);
+      }
       if (dist(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y) < 1000) {
         line(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y);
       }

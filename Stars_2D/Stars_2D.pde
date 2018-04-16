@@ -3,7 +3,7 @@
 
 boolean picMode = false;
 
-Star stars[] = new Star[200];
+Star stars[] = new Star[500];
 
 
 // parralax (?) - how much the "camera" moves around when the keys are pressed
@@ -36,7 +36,7 @@ void setup() {
   areaMax = new PVector(width*2, height*2);
   areaMin = new PVector(-width*2, -height*2);
   for (int i = 0; i<stars.length; i++) {
-    stars[i] = new Star(new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(4, 8));
+    stars[i] = new Star(new PVector(random(areaMin.x, areaMax.x), random(areaMin.y, areaMax.y)), random(3, 10));
   }
 
   for (int i = 0; i<planets.length; i++) {
@@ -125,6 +125,10 @@ void keyPressed() {
     for (int i = 0; i < planets.length; i++) {
       planets[i].mapToPic();
     }
+    for (int i = 0; i< doodles.size(); i++) {
+      drawing d = doodles.get(i);
+      d.mapToPic();
+    }
   }
 
   if (!picMode) {
@@ -158,7 +162,9 @@ void keyPressed() {
       planets[i].keyPressed();
     }
     if (keyCode == CONTROL && drawing) {
-      doodles.remove(doodles.size()-1);
+      if (doodles.size() >= 1) {
+        doodles.remove(doodles.size()-1);
+      }
     }
     if (keyCode == DELETE) {
       for (int i = 0; i <connectors.size(); i++) {
