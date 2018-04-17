@@ -56,15 +56,6 @@ class Planet extends CeOb {
     name = n;
   }
 
-  void drawPath() {
-    //for (int i = int(areaMin.x); i < areaMax.x; i++) {
-    //  float j = sin((2*PI/areaMax.x)*i)/50;
-    //  stroke(c);
-    //  point(i, j);
-    //}
-  }
-
-
   void mousePressed() {
     if (mouseButton == RIGHT && mouseOn()) {
       text = true;

@@ -28,6 +28,8 @@ int lastStarID = -1;
 
 boolean drawing = false;
 
+int timer = 0;
+
 
 //________________________________S E T U P_____________________________________________
 void setup() {
@@ -53,7 +55,24 @@ void draw() {
     background(0);
   }
 
+  display();
 
+  textAlign(CORNER);
+  textSize(15);
+  fill(200, 200, 255);
+  text("Arrow keys to move\nClick a star and drag to make a connection\nPress A to make a constellation\nRight click constellations and planets to rename them\nPress SHIFT to draw on top of constellation/celestial bodies", 20, 20);
+  if (timer > 0) {
+    if (millis() - timer > 255) {
+      timer = 0;
+    } else {
+      float f = 255 -(millis()-timer);
+      fill(255, f);
+      rect(0, 0, width, height);
+    }
+  }
+}
+
+void display() {
   if (lastStarID>-1) {
     stroke(200);
     line(stars[lastStarID].getPosition().x, stars[lastStarID].getPosition().y, mouseX, mouseY);
@@ -83,15 +102,18 @@ void draw() {
     stars[i].move(plx);
   }
 
-
   for (int i = 0; i<planets.length; i++) {
     planets[i].display();
     planets[i].travel();
   }
-  textAlign(CORNER);
-  textSize(15);
-  fill(200, 200, 255);
-  text("Arrow keys to move\nClick a star and drag to make a connection\nPress A to make a constellation\nRight click constellations and planets to rename them\nPress SHIFT to draw on top of constellation/celestial bodies", 20, 20);
+}
+
+
+void takePicture() {
+  drawing = false;
+  display();
+  save("data/savedImage.png");
+  timer = millis();
 }
 
 //________________________________C O N S T E L L A T I O N_____________________________
@@ -129,6 +151,9 @@ void keyPressed() {
       drawing d = doodles.get(i);
       d.mapToPic();
     }
+  }
+  if (key == 'p') {
+    takePicture();
   }
 
   if (!picMode) {

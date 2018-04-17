@@ -4,9 +4,6 @@ class CeOb {
 
   CeOb() {
   }
-
-
-
   boolean mouseOn() {
     if (mouseX > p.x -size
       && mouseX < p.x+size
