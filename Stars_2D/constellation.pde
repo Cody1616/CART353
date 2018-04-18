@@ -1,6 +1,8 @@
 class Constellation {
+  // list of connectors
   ArrayList<Connector> lines = new ArrayList<Connector>();
   String name;
+  // whether text is being written down
   boolean text = false;
 
   Constellation() {
@@ -14,26 +16,25 @@ class Constellation {
     for (int i = 0; i<lines.size(); i++) {
 
       Connector c = lines.get(i);
-      if (drawing) {
+      if (drawingMode) {
         stroke(0);
       } else {
         stroke(0, 0, 100);
       }
-      if (picMode) {
+      if (mapMode) {
         strokeWeight(20);
       } else {
         strokeWeight(50);
       }
+      // if the points are not too far from one another, draw the line
       if (dist(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y) < 1000) {
         line(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y);
       }
     }
     for (int i = 0; i<lines.size(); i++) {
-
       Connector c = lines.get(i);
-
+      // draw a border around the constellation
       if (dist(c.getPoint1().x, c.getPoint1().y, c.getPoint2().x, c.getPoint2().y) < 1000) {
-
         if (mouse()) {
           stroke(200);
           strokeWeight(10);
@@ -42,7 +43,7 @@ class Constellation {
           text(name, mouseX, mouseY);
         }
       }
-
+      // display the connector over the blue "border"
       c.display();
     }
 
@@ -96,7 +97,6 @@ class Constellation {
         // if delete, delete all
       } else if (keyCode == DELETE) {
         name = "";
-        // anything else... jot it down
       } else if (keyCode == ENTER) {
         text = false;
       } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {

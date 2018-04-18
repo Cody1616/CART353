@@ -40,13 +40,13 @@ class drawing {
       p.y-= areaMax.y-areaMin.y;
     }
   }
-  void mapToPic() {
+  void convert() {
     for (int i = 0; i < sketch.size(); i++) {
       PVector p = sketch.get(i);
-      if (!picMode) {
+      if (!mapMode) {
         p.x = map(p.x, 0, width, areaMin.x, areaMax.x);
         p.y = map(p.y, 0, height, areaMin.y, areaMax.y);
-      } else if (picMode) {
+      } else if (mapMode) {
         p.x = map(p.x, areaMin.x, areaMax.x, 0, width);
         p.y= map(p.y, areaMin.y, areaMax.y, 0, height);
       }

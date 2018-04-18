@@ -1,10 +1,11 @@
 //CODY GAUDET - CONSTELLATION MAPPER
 //________________________________INITIALIZATION________________________________________
 
-boolean picMode = false;
+// boolean for whether the program is in map mode
+boolean mapMode = false;
 
+// stars
 Star stars[] = new Star[500];
-
 
 // parralax (?) - how much the "camera" moves around when the keys are pressed
 PVector plx = new PVector(0, 0);
@@ -13,22 +14,28 @@ PVector plx = new PVector(0, 0);
 PVector areaMax;
 PVector areaMin;
 
+
+// list of constellations and an arraylist for the constellation currently being made
 ArrayList<Connector> connectors = new ArrayList<Connector>();
+ArrayList<Constellation> constellations = new ArrayList<Constellation>();
 
-ArrayList<Constellation> stells = new ArrayList<Constellation>();
-
+// list of drawings and drawing in process
 ArrayList<PVector> mouseDrawing = new ArrayList<PVector>();
-
-ArrayList<drawing> doodles = new ArrayList<drawing>();
+ArrayList<drawing> sketches = new ArrayList<drawing>();
 
 Planet[] planets = new Planet[10];
 
 // set last star ID to -1 (ie no star selected)
 int lastStarID = -1;
 
-boolean drawing = false;
+// "drawing" mode
+boolean drawingMode = false;
 
+// timer for the camera flash
 int timer = 0;
+
+// number of images taken
+int img = 0;
 
 
 //________________________________S E T U P_____________________________________________
@@ -48,41 +55,47 @@ void setup() {
 
 //________________________________D R A W_______________________________________________
 void draw() {
-  if (drawing) {
+  if (drawingMode) {
+    // if the user is in drawing mode, have a blue background.
     background(0, 0, 100);
     drawPanel();
   } else {
     background(0);
   }
-
+  // display all elements
   display();
 
   textAlign(CORNER);
   textSize(15);
   fill(200, 200, 255);
-  text("Arrow keys to move\nClick a star and drag to make a connection\nPress A to make a constellation\nRight click constellations and planets to rename them\nPress SHIFT to draw on top of constellation/celestial bodies", 20, 20);
+  text("Arrow keys to move\nClick a star and drag to make a connection\nPress A to make a constellation\nRight click constellations and planets to rename them\nPress SHIFT to draw on top of constellation/celestial bodies\npress P to take a picture", 20, 20);
+
+  // camera flash
   if (timer > 0) {
     if (millis() - timer > 255) {
       timer = 0;
     } else {
       float f = 255 -(millis()-timer);
       fill(255, f);
+      rectMode(CORNER);
       rect(0, 0, width, height);
     }
   }
 }
 
 void display() {
+  // if there is a connector being drawn, display it
   if (lastStarID>-1) {
     stroke(200);
     line(stars[lastStarID].getPosition().x, stars[lastStarID].getPosition().y, mouseX, mouseY);
   }
+  // display everything else
   for (int i = 0; i < connectors.size(); i++) {
     Connector c = connectors.get(i);
     c.display();
   }
-  for (int i = 0; i< stells.size(); i++) {
-    Constellation c = stells.get(i);
+  for (int i = 0; i< constellations.size(); i++) {
+    Constellation c = constellations.get(i);
     c.display();
   }
   for (int i = 1; i<mouseDrawing.size(); i++) {
@@ -92,8 +105,8 @@ void display() {
     stroke(255);
     line(v1.x, v1.y, v2.x, v2.y);
   }
-  for (int i = 0; i<doodles.size(); i++) {
-    drawing d1 = doodles.get(i);
+  for (int i = 0; i<sketches.size(); i++) {
+    drawing d1 = sketches.get(i);
     d1.display();
     d1.move();
   }
@@ -110,18 +123,21 @@ void display() {
 
 
 void takePicture() {
-  drawing = false;
-  display();
-  save("data/savedImage.png");
+  drawingMode = false;
+  background(0);
+  display(); // display everything except text
+  save("data/stars"+img+".png");
+  img++;
   timer = millis();
 }
 
 //________________________________C O N S T E L L A T I O N_____________________________
 void createConst() {
+  // create new constellation, store connectors in it, put the constellation in arraylist, reset
   Constellation c = new Constellation();
   c.lines.addAll(connectors);
-  c.setName("Constellation"+stells.size());
-  stells.add(c);
+  c.setName("Constellation"+constellations.size());
+  constellations.add(c);
   connectors.clear();
 }
 //________________________________DRAW________________________________________
@@ -129,6 +145,7 @@ void createConst() {
 void drawPanel() {
 
   stroke(255);
+  // add each new stroke to an arraylist
   if (mousePressed == true) {
     stroke(255);
     strokeWeight(1);
@@ -140,23 +157,25 @@ void drawPanel() {
 //________________________________KEYBOARD STUFF________________________________________
 void keyPressed() {
   if (key == 'q') {
-    picMode = !picMode;
+    // map all elements to fit the screen
+    mapMode = !mapMode;
     for (int i = 0; i < stars.length; i++) {
-      stars[i].mapToPic();
+      stars[i].convert();
     }
     for (int i = 0; i < planets.length; i++) {
-      planets[i].mapToPic();
+      planets[i].convert();
     }
-    for (int i = 0; i< doodles.size(); i++) {
-      drawing d = doodles.get(i);
-      d.mapToPic();
+    for (int i = 0; i< sketches.size(); i++) {
+      drawing d = sketches.get(i);
+      d.convert();
     }
   }
   if (key == 'p') {
     takePicture();
   }
 
-  if (!picMode) {
+  if (!mapMode) {
+    
     if (keyCode == LEFT) {
       plx.x = 10;
     }
@@ -171,26 +190,29 @@ void keyPressed() {
     }
 
     if (key == 'a') {
+      // if there are connectors, make a constellation out of them
       if (!connectors.isEmpty()) {
-        println("CONSTELLATION CREATED");
         createConst();
       }
     }
     if (keyCode == SHIFT) {
-      drawing = !drawing;
+      // switch drawing mode
+      drawingMode = !drawingMode;
     }
-    for (int i = 0; i<stells.size(); i++) {
-      Constellation c = stells.get(i);
+    for (int i = 0; i<constellations.size(); i++) {
+      Constellation c = constellations.get(i);
       c.keyPressed();
     }
     for (int i = 0; i<planets.length; i++) {
       planets[i].keyPressed();
     }
-    if (keyCode == CONTROL && drawing) {
-      if (doodles.size() >= 1) {
-        doodles.remove(doodles.size()-1);
+    if (keyCode == CONTROL && drawingMode) {
+      // ctrl delete - remove last line drawn
+      if (sketches.size() >= 1) {
+        sketches.remove(sketches.size()-1);
       }
     }
+    // delete connectors
     if (keyCode == DELETE) {
       for (int i = 0; i <connectors.size(); i++) {
         Connector c = connectors.get(i);
@@ -199,8 +221,8 @@ void keyPressed() {
         }
       }
 
-      for (int i = 0; i <stells.size(); i++) {
-        Constellation s = stells.get(i);
+      for (int i = 0; i <constellations.size(); i++) {
+        Constellation s = constellations.get(i);
         for (int j = 0; j< s.lines.size(); j++) {
 
           Connector c = s.lines.get(j);
@@ -226,6 +248,7 @@ void keyReleased() {
 
 //________________________________MOUSE STUFF________________________________________
 void mousePressed() {
+  // when a star is clicked on, a line is drawn between it and the cursor
   for (int i = 0; i<stars.length; i++) {
     if (stars[i].mouseOn()) {
       if (lastStarID <= -1) {
@@ -234,8 +257,8 @@ void mousePressed() {
       }
     }
   }
-  for (int i = 0; i<stells.size(); i++) {
-    Constellation c = stells.get(i);
+  for (int i = 0; i<constellations.size(); i++) {
+    Constellation c = constellations.get(i);
     c.mousePressed();
   }
   for (int i = 0; i<planets.length; i++) {
@@ -244,6 +267,7 @@ void mousePressed() {
 }
 
 void mouseDragged() {
+  // connect other stars in a row
   for (int i = 0; i<stars.length; i++) {
     if (stars[i].mouseOn() && lastStarID > -1) {
       connectors.add(new Connector(stars[lastStarID], stars[i]));
@@ -252,16 +276,16 @@ void mouseDragged() {
   }
 }
 void mouseReleased() {
-  if (drawing) {
-    println("NEW");
+  if (drawingMode) {
+    // put all lines in a new drawing, add that drawing to arraylist
     drawing c = new drawing();
     c.sketch.addAll(mouseDrawing);
-    doodles.add(c);
+    sketches.add(c);
     mouseDrawing.clear();
   }
+  // if mouse released on a star and there's a star being connected, add new connector
   for (int i = 0; i<stars.length; i++) {
     if (stars[i].mouseOn() && lastStarID > -1) {
-      println("CONNECT");
       connectors.add(new Connector(stars[lastStarID], stars[i]));
     }
   }

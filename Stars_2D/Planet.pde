@@ -14,18 +14,18 @@ class Planet extends CeOb {
     amp = ta;
   }
 
-  void travel() {
+  void travel() { // travel around the x axis in a sine wave
     p.x +=orbit;
-    p.y += amp*sin((2*PI/(areaMax.x-areaMin.x))*p.x)/50 ;
+    p.y += amp*sin((2*PI/(areaMax.x-areaMin.x))*p.x)/50;
+    // add parallax value twice to give illusion of depth
     p.add(plx);
     p.add(plx);
+    // loop around if on edge
     checkEdge();
   }
 
   void display() {
-
-
-    if (mouseOn() &&!picMode) {
+    if (mouseOn() &&!mapMode) {
       stroke(255);
       strokeWeight(2);
     } else {
@@ -33,16 +33,16 @@ class Planet extends CeOb {
     }
     fill(c);
     ellipse(p.x, p.y, size, size);
-    if (mouseOn() &&!picMode) {
+    if (mouseOn() &&!mapMode) {
       fill(255);
       text(name, mouseX, mouseY);
     }
-    if (text && !picMode) {
-
+    if (text && !mapMode) {
+      // text mode to enter a new name
       fill(100);
       stroke(255);
       rectMode(CENTER);
-      rect(width/2, height/2, 200, 100);
+      rect(width/2, height/2, 300, 100);
       fill(255);
       textSize(30);
       textAlign(CENTER);
@@ -73,9 +73,10 @@ class Planet extends CeOb {
         // if delete, delete all
       } else if (keyCode == DELETE) {
         name = "";
-        // anything else... jot it down
+        // enter exits text mode (and the name is saved)
       } else if (keyCode == ENTER) {
         text = false;
+        // anything else is written
       } else if (keyCode != SHIFT && keyCode != CONTROL && keyCode != ALT) {
         name = name + key;
       }
